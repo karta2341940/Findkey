@@ -2,111 +2,61 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#define boolean char
+boolean debug = 1;
 
-
-typedef struct Record
-{
-    char front[512];
-    char back[512];
-}Record;
-
-
-int TotalR(int t);
-int s(int n);
-int c(int n,int r);
-void *brackets (char *relation);
-
-
+void * getword(char* relation);
+void fd_deal(char** fds,int number_of_fds);
+char* strreplace(char * ,const char*);
 int main()
 {
     char relation[1024];
-    int num_input=0;
     scanf("%s",relation);
-    strcpy(relation , (char*)brackets(relation));
-    scanf("%d",&num_input);
 
+    getword(relation);
+    if(debug)printf("%s\n",relation); //debug
+    int number_of_fd = 0;
+    scanf("%d",&number_of_fd);
+    if(debug)printf("%d\n",number_of_fd); //debug
+    char** fds =calloc(number_of_fd,sizeof(char*));
+    for( int i = 0 ; i < number_of_fd ; i ++ )
+    {
+        fds[i] = calloc(512,1);//initial the string into a 512 bytes dual array
+        scanf("%s",fds[i]);
+        if(debug)printf("%s\n",fds[i]); // debug
+    }
+    fd_deal(fds,number_of_fd);
 
-    return 0;
 }
 
-
-/**
- * This function is in order to find the key of input relation
- */
-
-void *generate()
+void * getword(char* relation)
 {
-   
-}
-
-/**
- * Make the input relation into pure word array
- * @param relation The array that the first line that you input
- */
-void *brackets(char*relation)
-{
-    char *temp,*temp2;
-    int not_name=0,indexN=0;
-    int len = strlen(relation),len2=0;
-    temp = malloc(len*sizeof(char));
-    strcpy(temp,relation);
-    for(int i = 0 ; i < len-1; i++)
+    char* temp = calloc(strlen(relation),sizeof(char));
+    for( int i = 0 ; i < strlen(relation) ; i ++ )
     {
         if(relation[i] == '(')
         {
-            not_name++;
-        }
-        else if(relation[i] == ')')
-        {
-            not_name=0;
-        }
-        if(not_name)
-        {
-            //temp[indexN] = relation[i];
-            strcpy(&temp[indexN],&relation[i]);
-            indexN++;
-        }
-    }
-    len2=strlen(temp);
-    temp2 = malloc((len2-2)*sizeof(char));
-    
-    {
-        int j=0;
-        for(int i = 0 ; i < len2 ; i++)
-        {
-            if( i != 0 && i != len2-1 )
+            for( int j = i+1 ; j < strlen(relation)-1 ; j++ )
             {
-                temp2[j]= temp[i];
-                j++;
+                temp[j-(i+1)]=relation[j];
             }
+            break;
         }
     }
+    return strcpy(relation,temp);
+}
 
-    return temp2;
+void fd_deal(char** fds,int number_of_fds)
+{
+    for(int i = 0 ; i <strlen(fds) ; i++ )
+    {
+        //strreplace();
+        //fds[i] 
+    }
 }
-/**
- * Made the formation AB->C into ab and c
- * @param strfd The array of fd as string array
- * @param fdnum The total number of fd
- */
 
-int s(int n)
+char* strreplace(char * src,const char* replace)
 {
-    int result=1;
-    for(int i = 1 ; i <= n ; i++) result = i*result;
-    return result;
-}
-/**
- * Combination
- * Get r in n;
- */
-int c(int n,int r)
-{
-    return s(n) / ( s(r)*s(n-r));  
-}
-int TotalR(int t)
-{
-    int a=0;
-    for(int i = 1 ; i <= t ; i ++) a = a + c(t,i);
-    return a; 
+    strstr(src,replace);
+
 }
