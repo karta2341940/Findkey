@@ -4,6 +4,11 @@
 #include <math.h>
 
 
+typedef struct FuncD
+{
+    char front;
+    char back[512];
+}FuncD;
 typedef struct Record
 {
     char front[512];
@@ -19,14 +24,7 @@ void *optimized(char ** strfd,int num);
 
 int main()
 {
-    char relation[1024];
-    int num_input=0;
-    FuncD *fd;
-    Record *record = calloc(TotalR(r_total),sizeof(Record*));
-    scanf("%s",relation);
-    strcpy(relation , (char*)brackets(relation));
-    scanf("%d",&num_input);
-
+   
 
     return 0;
 }
@@ -59,7 +57,7 @@ void *generate(int words,int Layer,Record* FDs)
     }
     else
     {
-        return generate(words,Layer+1);
+        return generate(words,Layer+1,FDs);
     }
 }
 
@@ -113,13 +111,14 @@ void *brackets(char*relation)
  * @param strfd The array of fd as string array
  * @param fdnum The total number of fd
  */
+/*
 void *optimized(char ** strfd,int fdnum)
 {
     FuncD *fd = malloc( fdnum * sizeof(FuncD));
     
     for(int i =  0 ; i < fdnum ;i++)
     {
-        fd[i].back = strfd[i][strlen(strfd[i])-1];
+        //fd[i].back = strfd[i][strlen(strfd[i])-1];
         for(int j = 0 ; j < strlen(strfd[i]); j++ )
         {
             if( strfd[i][j] == '-')
@@ -135,6 +134,7 @@ void *optimized(char ** strfd,int fdnum)
     }
     return fd;
 }
+*/
 int s(int n)
 {
     int result=1;
