@@ -15,14 +15,12 @@ int TotalR(int t);
 int s(int n);
 int c(int n,int r);
 void *brackets (char *relation);
-void *optimized(char ** strfd,int num);
+
 
 int main()
 {
     char relation[1024];
     int num_input=0;
-    FuncD *fd;
-    Record *record = calloc(TotalR(r_total),sizeof(Record*));
     scanf("%s",relation);
     strcpy(relation , (char*)brackets(relation));
     scanf("%d",&num_input);
@@ -36,31 +34,9 @@ int main()
  * This function is in order to find the key of input relation
  */
 
-void *generate(int words,int Layer)
+void *generate()
 {
-    char * temp;
-    if( Layer == 1 )
-    {
-        for ( int i = 0 ; i < words ; i++ )
-        {
-
-        }
-    }
-    else
-    {
-        
-    }
-
-    //Detect wheater jump out from the loop
-    if( Layer == TotalR(words) )
-    {
-
-        return 0;
-    }
-    else
-    {
-        return generate(words,Layer+1);
-    }
+   
 }
 
 /**
@@ -113,28 +89,7 @@ void *brackets(char*relation)
  * @param strfd The array of fd as string array
  * @param fdnum The total number of fd
  */
-void *optimized(char ** strfd,int fdnum)
-{
-    FuncD *fd = malloc( fdnum * sizeof(FuncD));
-    
-    for(int i =  0 ; i < fdnum ;i++)
-    {
-        fd[i].back = strfd[i][strlen(strfd[i])-1];
-        for(int j = 0 ; j < strlen(strfd[i]); j++ )
-        {
-            if( strfd[i][j] == '-')
-            {
-                break;
-            }
-            else if(strfd[i][j] != '-')
-            {
-                fd[i].front[j] = strfd[i][j];
-            }
-        }
-        //printf("%s,%c\n",fd[i].front,fd[i].back);
-    }
-    return fd;
-}
+
 int s(int n)
 {
     int result=1;
