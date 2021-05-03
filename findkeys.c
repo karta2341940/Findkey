@@ -35,12 +35,31 @@ int main()
 /**
  * This function is in order to find the key of input relation
  */
+
 void *generate(int words,int Layer)
 {
+    char * temp;
+    if( Layer == 1 )
+    {
+        for ( int i = 0 ; i < words ; i++ )
+        {
 
-    for ( int i = 0 ; i < words ; i++ )
+        }
+    }
+    else
+    {
+        
+    }
+
+    //Detect wheater jump out from the loop
+    if( Layer == TotalR(words) )
     {
 
+        return 0;
+    }
+    else
+    {
+        return generate(words,Layer+1);
     }
 }
 
