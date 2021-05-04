@@ -4,6 +4,7 @@
 #include <math.h>
 #define boolean char
 boolean debug = 1;
+#define nullptr NULL
 
 void * getword(char* relation);
 void fd_deal(char** fds,int number_of_fds);
@@ -57,6 +58,8 @@ void fd_deal(char** fds,int number_of_fds)
 
 char* strreplace(char * src,const char* replace)
 {
-    strstr(src,replace);
-
+    if(!strstr(src,replace))
+    {
+        return nullptrㄤ
+    }
 }
