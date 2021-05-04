@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
 #define boolean char
 boolean debug = 1;
 #define nullptr NULL
 
+
 void * getword(char* relation);
 void fd_deal(char** fds,int number_of_fds);
-char* strreplace(char * ,const char*);
+char* strreplace(char *,const char*,const char*);
+
 int main()
 {
     char relation[1024];
@@ -30,6 +33,10 @@ int main()
 
 }
 
+/**
+ * To remove schema's name and parentheses and return the string
+ * @param relation The input schema
+ */
 void * getword(char* relation)
 {
     char* temp = calloc(strlen(relation),sizeof(char));
@@ -46,20 +53,44 @@ void * getword(char* relation)
     }
     return strcpy(relation,temp);
 }
-
+/**
+ * Turn the formate abc->c into abc,c
+ * @param fds The fd that you input
+ * @param number_of_fds The total number of fds
+ */
 void fd_deal(char** fds,int number_of_fds)
 {
-    for(int i = 0 ; i <strlen(fds) ; i++ )
+    for(int i = 0 ; i <number_of_fds ; i++ )
     {
-        //strreplace();
-        //fds[i] 
+        strreplace(fds[i],"->",",");
+        if(debug)printf("\t%s\t\n",fds[i]);
     }
 }
-
-char* strreplace(char * src,const char* replace)
+/**
+ * To replace the SRC into TARGET in DEST
+ */
+char* strreplace(char * dest,const char* src,const char* target)
 {
-    if(!strstr(src,replace))
+    char *x =strstr(dest,src);
+    int y = x - dest ;
+    if(0)//debug
     {
-        return nullptrㄤ
+        printf("%p,%p\n",dest,strstr(dest,src));
+        printf("%s is at the position %d\n",src,y);
+    }
+    if(!x)
+    {
+        printf("%s not found\n",src);
+        return nullptr;
+    }
+    else if(x)
+    {
+        char * temp = calloc( strlen(dest) - strlen(src) + strlen(target) , sizeof(char) );
+        char * temp2 = calloc( strlen(dest) - strlen(src) + strlen(target) , sizeof(char) );
+        strncpy(temp,dest,y);//fd的前面
+        strncpy(temp2,x+strlen(src),strlen(dest)-y-strlen(src));//儲存fd的後面
+        strncat(temp,target, strlen(target));//加逗號
+        strncat(temp,temp2,strlen(temp2));
+        strcpy(dest,temp);//return to dest
     }
 }
