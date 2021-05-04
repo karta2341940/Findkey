@@ -11,6 +11,12 @@ boolean debug = 1;
 void * getword(char* relation);
 void fd_deal(char** fds,int number_of_fds);
 char* strreplace(char *,const char*,const char*);
+int s(int n);
+int c(int n,int r);
+int TotalR(int t);
+char** general_closure(int relation_words);
+void general_binary_code(int input,int relation_words);
+
 
 int main()
 {
@@ -31,13 +37,14 @@ int main()
     }
     fd_deal(fds,number_of_fd);
 
+    general_closure(strlen(relation));
 }
 
 /**
  * To remove schema's name and parentheses and return the string
  * @param relation The input schema
  */
-void * getword(char* relation)
+void* getword(char* relation)
 {
     char* temp = calloc(strlen(relation),sizeof(char));
     for( int i = 0 ; i < strlen(relation) ; i ++ )
@@ -63,7 +70,7 @@ void fd_deal(char** fds,int number_of_fds)
     for(int i = 0 ; i <number_of_fds ; i++ )
     {
         strreplace(fds[i],"->",",");
-        if(debug)printf("\t%s\t\n",fds[i]);
+        if(0)printf("\t%s\t\n",fds[i]);
     }
 }
 /**
@@ -91,6 +98,72 @@ char* strreplace(char * dest,const char* src,const char* target)
         strncpy(temp2,x+strlen(src),strlen(dest)-y-strlen(src));//儲存fd的後面
         strncat(temp,target, strlen(target));//加逗號
         strncat(temp,temp2,strlen(temp2));
-        strcpy(dest,temp);//return to dest
+        return strcpy(dest,temp);//return to dest
     }
+}
+/**
+ * To general closure
+ */
+char** general_closure(int relation_words)
+{
+    char **closure = calloc( TotalR(relation_words) , sizeof(char*) );
+    for( int i = 1 ; i < TotalR(relation_words)+1 ; i++ )
+    {
+         printf("%d\t",i);
+        general_binary_code(i,relation_words);
+    }
+}
+void general_binary_code(int input,int relation_words)
+{
+    
+    int i =relation_words;
+    char* temp = calloc(relation_words,sizeof(char));
+    while ( i != 0 )
+    {
+        temp[i] = 30+(input%2);
+        input = input/2;
+        i--;
+    }
+    printf("%ld",sizeof(temp));
+    printf("\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------Math----------------
+int s(int n)
+{
+    int result=1;
+    for(int i = 1 ; i <= n ; i++) result = i*result;
+    return result;
+}
+int c(int n,int r)
+{
+    return s(n) / ( s(r)*s(n-r));  
+}
+int TotalR(int t)
+{
+    int a=0;
+    for(int i = 1 ; i <= t ; i ++) a = a + c(t,i);
+    return a; 
 }
