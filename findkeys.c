@@ -14,7 +14,7 @@ char* strreplace(char *,const char*,const char*);
 int s(int n);
 int c(int n,int r);
 int TotalR(int t);
-char** general_closure(int relation_words);
+char** general_closure(int relation_words,char* relation);
 void* general_binary_code(int input,int relation_words,char* closure);
 
 
@@ -37,7 +37,7 @@ int main()
     }
     fd_deal(fds,number_of_fd);
 
-    general_closure(strlen(relation));
+    general_closure(strlen(relation),relation);
 }
 
 /**
@@ -104,37 +104,54 @@ char* strreplace(char * dest,const char* src,const char* target)
 /**
  * To general closure
  */
-char** general_closure(int relation_words)
+char** general_closure(int relation_words,char* relation)
 {
     char **closure = calloc( TotalR(relation_words) , sizeof(char*) );
-    
-    for( int input = 1 ; input < TotalR(relation_words)+1 ; input++ )
+    char **closure2 = calloc( TotalR(relation_words) , sizeof(char*) );
+    for( int input = 0 ; input < TotalR(relation_words) ; input++ )
     {
         closure[input] = calloc(relation_words,sizeof(char));
-        general_binary_code(input,relation_words,closure[input]);
-        if(debug)//debug
-        {
-            for(int i = 3 ; i <= 0 ; i -- )
-            {
-                printf("%d",closure[input][i]);
-            }
-            printf("\n");
-        }
+        closure2[input] = calloc(relation_words+1,sizeof(char));
+        closure[input] = general_binary_code(input,relation_words,closure[input]);
         
+        debug=0;
+        int j = 0;
+        for(int i = 0 ; i < relation_words ; i++)
+        {
+            if(closure[input][i])
+            {
+                closure2[input][j]=relation[i];
+                j++;
+            }
+            if(i == relation_words-1)
+            if(debug)printf("%c",closure2[input][i]);
+        }
+        if(debug)printf("\n");//debug
+    }
+
+    for(int i = 0 ; i < 15; i ++ )
+    {
+        
+    printf("%s",closure2[i]);
+            
+    printf("\n");
     }
     
 }
 void* general_binary_code(int input,int relation_words,char* closure)
 {
-    int i =relation_words;
-    while ( i != 0 )
+    input = input+1;
+    int in =0;
+    while ( in != relation_words )
     {
         int x = (input % 2);
-        closure[i] = x;
-        printf("%d",closure[i]);
+        closure[in] = x;
+        //printf("%d",closure[in]);
         input = input/2;
-        i--;
+        in++;
     }
+    //if(debug)for(int i = 0 ; i < relation_words ; i++)
+    //printf("%d",closure[i]);
     //printf("\n");
     
     return closure;
