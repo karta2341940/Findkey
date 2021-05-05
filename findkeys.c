@@ -15,7 +15,7 @@ int s(int n);
 int c(int n,int r);
 int TotalR(int t);
 char** general_closure(int relation_words);
-void general_binary_code(int input,int relation_words);
+void* general_binary_code(int input,int relation_words,char* closure);
 
 
 int main()
@@ -107,25 +107,37 @@ char* strreplace(char * dest,const char* src,const char* target)
 char** general_closure(int relation_words)
 {
     char **closure = calloc( TotalR(relation_words) , sizeof(char*) );
-    for( int i = 1 ; i < TotalR(relation_words)+1 ; i++ )
-    {
-         printf("%d\t",i);
-        general_binary_code(i,relation_words);
-    }
-}
-void general_binary_code(int input,int relation_words)
-{
     
+    for( int input = 1 ; input < TotalR(relation_words)+1 ; input++ )
+    {
+        closure[input] = calloc(relation_words,sizeof(char));
+        general_binary_code(input,relation_words,closure[input]);
+        if(debug)//debug
+        {
+            for(int i = 3 ; i <= 0 ; i -- )
+            {
+                printf("%d",closure[input][i]);
+            }
+            printf("\n");
+        }
+        
+    }
+    
+}
+void* general_binary_code(int input,int relation_words,char* closure)
+{
     int i =relation_words;
-    char* temp = calloc(relation_words,sizeof(char));
     while ( i != 0 )
     {
-        temp[i] = 30+(input%2);
+        int x = (input % 2);
+        closure[i] = x;
+        printf("%d",closure[i]);
         input = input/2;
         i--;
     }
-    printf("%ld",sizeof(temp));
-    printf("\n");
+    //printf("\n");
+    
+    return closure;
 }
 
 
