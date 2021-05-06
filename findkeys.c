@@ -7,6 +7,14 @@
 boolean debug = 1;
 #define nullptr NULL
 
+typedef struct findkeys
+{
+    char** right;
+    char** left;
+    char** fds;
+    int total_word;
+    int number_of_fds;
+}findkeys;
 
 void * getword(char* relation);
 void fd_deal(char** fds,int number_of_fds);
@@ -17,13 +25,18 @@ int TotalR(int t);
 char** general_closure(int relation_words,char* relation);
 void* general_binary_code(int input,int relation_words,char* closure);
 char * upper (char * fds);
+findkeys find_key(findkeys* findkeys);
+
+
+
+
 
 int main()
 {
     char relation[1024];
     scanf("%s",relation);
 
-    getword(relation);
+    getword(upper(relation));
     if(debug)printf("%s\n",relation); //debug
     int number_of_fd = 0;
     scanf("%d",&number_of_fd);
@@ -36,9 +49,24 @@ int main()
         upper(fds[i]);
         if(debug)printf("%s\n",fds[i]); // debug
     }
+
     fd_deal(fds,number_of_fd);
 
-    general_closure(strlen(relation),relation);
+    findkeys findkeys;
+    findkeys.right = general_closure(strlen(relation),relation);;
+    findkeys.left= calloc(TotalR(strlen(relation)),sizeof(char*));
+    findkeys.number_of_fds=number_of_fd;
+    findkeys.total_word=strlen(relation);
+    findkeys.fds=fds;
+    for(int i = 0; i < 15 ;i ++)
+    {
+        findkeys.left[i] = calloc(strlen(relation)+1,sizeof(char));
+        printf("{%s}",findkeys.right[i]);
+        printf("\n");
+    }
+
+    find_key(&findkeys);
+
 }
 
 /**
@@ -116,32 +144,28 @@ char** general_closure(int relation_words,char* relation)
         //closure[input] = general_binary_code(input,relation_words,closure[input]);
         general_binary_code(input,relation_words,closure[input]);
         
-        debug=0;
         int j = 0;
         for(int i = 0 ; i < relation_words ; i++)
         {
             if(closure[input][i])
             {
                 closure2[input][j]=relation[i];
-                //strcpy(closure[input],closure2[input]);
                 j++;
             }
-            if(i == relation_words-1)
-            if(debug)printf("%c",closure2[input][i]);
         }
-        if(debug)printf("\n");//debug
-    }
-
-    for(int i = 0 ; i < 15; i ++ )
-    {
-        
-    printf("{%s}",closure2[i]);
-            
-    printf("\n");
     }
     
+    for(int i = 0 ; i < 15; i ++ )
+    {
+        closure[i] = closure2[i];
+        if(0)
+        {
+            printf("{%s}",closure[i]);
+            printf("\n");
+        }
+    }
+    return closure;
 }
-
 void* general_binary_code(int input,int relation_words,char* closure)
 {
     input = input+1;
@@ -161,22 +185,44 @@ void* general_binary_code(int input,int relation_words,char* closure)
     
     return closure;
 }
-
-char * upper (char * fds)
+/**
+ *Turn every lower word into upper
+ */
+char * upper (char * input)
 {
 
-    for(int i = 0 ; i < strlen( fds ) ; i ++ )
+    for(int i = 0 ; i < strlen( input ) ; i ++ )
     {
-        if( fds[i] > 90 )
+        if( input[i] > 90 )
         {
-            fds[i] = fds[i]-32;
+            input[i] = input[i]-32;
         }
     }
-    return 0;
+    return input;
 }
+/**
+ * To find keys und superkeys
+ * and also return struction findkey
+ */
+findkeys find_key(findkeys* findkeys)
+{
+    for( int i = 0 ; i < TotalR( findkeys->total_word ) ; i ++ )
+    {
+        int k = 0 ;
+        for( int j = 0 ; j < findkeys->number_of_fds ; j++ )
+        {
+            /*
+            if(findkeys->right[i][j] == findkeys->fds[j])
+            {
+                findkeys->left[k];
+                k++;
+            }
+            */
 
-
-
+        }
+    }
+    return *findkeys;
+}
 
 
 
@@ -206,6 +252,9 @@ int c(int n,int r)
 {
     return s(n) / ( s(r)*s(n-r));  
 }
+/**
+ * Calculate the number of all closure
+ */
 int TotalR(int t)
 {
     int a=0;
