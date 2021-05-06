@@ -16,7 +16,7 @@ int c(int n,int r);
 int TotalR(int t);
 char** general_closure(int relation_words,char* relation);
 void* general_binary_code(int input,int relation_words,char* closure);
-
+char * upper (char * fds);
 
 int main()
 {
@@ -33,6 +33,7 @@ int main()
     {
         fds[i] = calloc(512,1);//initial the string into a 512 bytes dual array
         scanf("%s",fds[i]);
+        upper(fds[i]);
         if(debug)printf("%s\n",fds[i]); // debug
     }
     fd_deal(fds,number_of_fd);
@@ -112,7 +113,8 @@ char** general_closure(int relation_words,char* relation)
     {
         closure[input] = calloc(relation_words,sizeof(char));
         closure2[input] = calloc(relation_words+1,sizeof(char));
-        closure[input] = general_binary_code(input,relation_words,closure[input]);
+        //closure[input] = general_binary_code(input,relation_words,closure[input]);
+        general_binary_code(input,relation_words,closure[input]);
         
         debug=0;
         int j = 0;
@@ -121,6 +123,7 @@ char** general_closure(int relation_words,char* relation)
             if(closure[input][i])
             {
                 closure2[input][j]=relation[i];
+                //strcpy(closure[input],closure2[input]);
                 j++;
             }
             if(i == relation_words-1)
@@ -132,12 +135,13 @@ char** general_closure(int relation_words,char* relation)
     for(int i = 0 ; i < 15; i ++ )
     {
         
-    printf("%s",closure2[i]);
+    printf("{%s}",closure2[i]);
             
     printf("\n");
     }
     
 }
+
 void* general_binary_code(int input,int relation_words,char* closure)
 {
     input = input+1;
@@ -150,11 +154,25 @@ void* general_binary_code(int input,int relation_words,char* closure)
         input = input/2;
         in++;
     }
+
     //if(debug)for(int i = 0 ; i < relation_words ; i++)
     //printf("%d",closure[i]);
     //printf("\n");
     
     return closure;
+}
+
+char * upper (char * fds)
+{
+
+    for(int i = 0 ; i < strlen( fds ) ; i ++ )
+    {
+        if( fds[i] > 90 )
+        {
+            fds[i] = fds[i]-32;
+        }
+    }
+    return 0;
 }
 
 
@@ -163,9 +181,7 @@ void* general_binary_code(int input,int relation_words,char* closure)
 
 
 
-
-
-
+ 
 
 
 
