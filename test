@@ -1,5 +1,5 @@
 R(ABCD)
 3
 ab->b
-b->c
+bc->c
 cde->a

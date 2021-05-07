@@ -9,7 +9,7 @@ boolean debug = 0;
 
 typedef struct findkeys
 {
-    char*** isolationfd;
+    char*** isolationfd;// Isolating fd's right and left
     char** right;
     char** left;
     char** fds;
@@ -62,16 +62,16 @@ int main()
     findkeys.total_word=strlen(relation);
     findkeys.fds=fds;
 
-    
+    /*
     for(int i = 0; i < 15 ;i ++)
     {
         findkeys.left[i] = calloc(strlen(relation)+1,sizeof(char));
         printf("{%s}",findkeys.right[i]);
         printf("\n");
     }
-
+    */
     find_key(&findkeys);
-    isolation(&findkeys);
+    
 
 }
 
@@ -212,27 +212,28 @@ char * upper (char * input)
  */
 findkeys find_key(findkeys* findkeys)
 {
+    isolation(&findkeys);
     for( int i = 0 ; i < TotalR( findkeys->total_word ) ; i ++ )
     {
-        int k = 0 ;
+        /*
+        int k = 0 , i2=0 ;
         for( int j = 0 ; j < findkeys->number_of_fds ; j++ )
         {
-            /*
-            if(findkeys->right[i][j] == findkeys->fds[j])
+            
+            if(findkeys->right[i][j] == findkeys->isolationfd[i][i2])
             {
-                findkeys->left[k];
-                k++;
+                
             }
-            */
+            
 
         }
+        */
     }
     return *findkeys;
 }
 
 void ***isolation(findkeys* findkey)
 {
-    
     void*** output = calloc( TotalR( findkey->total_word ) , sizeof(void**) ) ;
     for( int i = 0 ; i < TotalR( findkey->total_word ) ; i++ )
     {
@@ -243,7 +244,29 @@ void ***isolation(findkeys* findkey)
         }
     }
     findkey->isolationfd=(char***)output;
-
+    for( int i = 0 ; i < findkey->number_of_fds ; i ++ )
+    {
+        int sw=0;
+        int w = 0;
+        for( int j = 0 ; j < strlen( findkey->fds[i] ) ; j++ )
+        {   
+            //printf("j:%d w:%d ",j,w); 
+            if( findkey->fds[i][j] == ',' )
+            {
+                sw=1;
+                w=0;
+            }
+            if( findkey->fds[i][j] != ',' )
+            {
+                findkey->isolationfd[i][sw][w] = findkey->fds[i][j];
+                //printf("%c",findkey->isolationfd[i][sw][w]);
+                w++;
+                
+            }
+        }
+        //printf("\n");
+    }
+    return findkey->isolationfd;
 }
 
 
