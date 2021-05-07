@@ -4,11 +4,12 @@
 #include <math.h>
 
 #define boolean char
-boolean debug = 1;
+boolean debug = 0;
 #define nullptr NULL
 
 typedef struct findkeys
 {
+    char*** isolationfd;
     char** right;
     char** left;
     char** fds;
@@ -26,7 +27,7 @@ char** general_closure(int relation_words,char* relation);
 void* general_binary_code(int input,int relation_words,char* closure);
 char * upper (char * fds);
 findkeys find_key(findkeys* findkeys);
-
+void ***isolation(findkeys* findkey);
 
 
 
@@ -52,12 +53,16 @@ int main()
 
     fd_deal(fds,number_of_fd);
 
+    
+
     findkeys findkeys;
     findkeys.right = general_closure(strlen(relation),relation);;
     findkeys.left= calloc(TotalR(strlen(relation)),sizeof(char*));
     findkeys.number_of_fds=number_of_fd;
     findkeys.total_word=strlen(relation);
     findkeys.fds=fds;
+
+    
     for(int i = 0; i < 15 ;i ++)
     {
         findkeys.left[i] = calloc(strlen(relation)+1,sizeof(char));
@@ -66,6 +71,7 @@ int main()
     }
 
     find_key(&findkeys);
+    isolation(&findkeys);
 
 }
 
@@ -224,7 +230,21 @@ findkeys find_key(findkeys* findkeys)
     return *findkeys;
 }
 
+void ***isolation(findkeys* findkey)
+{
+    
+    void*** output = calloc( TotalR( findkey->total_word ) , sizeof(void**) ) ;
+    for( int i = 0 ; i < TotalR( findkey->total_word ) ; i++ )
+    {
+        output[i] = calloc( 2 , sizeof(char*) );
+        for( int j = 0 ; j < 2 ; j++ )
+        {
+            output[i][j] = calloc( findkey->total_word , sizeof(char) );
+        }
+    }
+    findkey->isolationfd=(char***)output;
 
+}
 
 
  
